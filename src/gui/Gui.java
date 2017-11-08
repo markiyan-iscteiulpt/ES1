@@ -17,6 +17,7 @@ public class Gui extends JFrame{
 	private FileConfig file;
 	private AutoConfig auto;
 	private ManualConfig manual;
+	private RightSide rightSide;
 	private File bg = new File("background/main_design.png");
 	private JLabel background;
 	private JPanel main_panel;
@@ -28,6 +29,7 @@ public class Gui extends JFrame{
 		this.file = new FileConfig();
 		this.auto = new AutoConfig();
 		this.manual = new ManualConfig();
+		this.rightSide = new RightSide();
 		setSize(new Dimension(1000, 615));
 		setTitle("AntiSpamConfigurationForLeisureMailbox");
 		background = new JLabel(new ImageIcon(ImageIO.read(bg)));
@@ -35,6 +37,7 @@ public class Gui extends JFrame{
 		
 		
 		main_panel.add(file);
+		main_panel.add(rightSide);
 		main_panel.add(auto);
 		main_panel.add(manual);
 		main_panel.add(background);
