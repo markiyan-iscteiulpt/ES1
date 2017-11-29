@@ -3,18 +3,16 @@ package gui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import mechanisms.FileReader;
 
 public class FileConfig extends JPanel{
 	
@@ -31,8 +29,11 @@ public class FileConfig extends JPanel{
 	private JButton load;
 	private String theOutString;
 	private JFileChooser fc;
+	private Gui gui;
+	private boolean lock = false;
 	
-	public FileConfig() throws IOException {
+	public FileConfig(Gui gui) throws IOException {
+		this.gui = gui;
 		setLayout(null);
 		setBounds(16, 21, 501, 173);
 		this.setOpaque(true);
@@ -48,28 +49,18 @@ public class FileConfig extends JPanel{
 		
 		rulesButton = new JButton("...");
 		rulesButton.setBounds(454, 28, 31, 21);
-		rulesButton.setOpaque(false);
-		rulesButton.setBorderPainted(false);
 		
 		spamButton = new JButton("...");
 		spamButton.setBounds(454, 63, 31, 21);
-		spamButton.setOpaque(false);
-		spamButton.setBorderPainted(false);
 		
 		hamButton = new JButton("...");
 		hamButton.setBounds(454, 97, 31, 21);
-		hamButton.setOpaque(false);
-		hamButton.setBorderPainted(false);
 		
-		reset = new JButton("Reset Config");
+		reset = new JButton("Reset");
 		reset.setBounds(243, 135, 112, 21);
-		reset.setOpaque(false);
-		reset.setBorderPainted(false);
 		
-		load = new JButton("Load Config");
+		load = new JButton("Load Files");
 		load.setBounds(373, 135, 112, 21);
-		load.setOpaque(false);
-		load.setBorderPainted(false);
 		
 		rulesField.setBounds(80, 28, 360, 20);
 		spamField.setBounds(80, 63, 360, 20);
@@ -84,7 +75,7 @@ public class FileConfig extends JPanel{
 		add(reset);
 		add(load);
 		
-		loadPath();
+		filearray = FileReader.loadPath(rulesField, spamField, hamField);
 		
 		rulesButton.addActionListener(listener());
 		spamButton.addActionListener(listener());
@@ -98,6 +89,7 @@ public class FileConfig extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == rulesButton){
+					if(!lock){
 					if(filearray[0] != null){
 						File file = filearray[0];
 						fc = new JFileChooser(file);
@@ -125,14 +117,16 @@ public class FileConfig extends JPanel{
 							rulesField.setText(theOutString);
 							filearray[0] = new File(theOutString);
 						try {
-							savePath();
+							FileReader.savePath(filearray);
 						} catch (IOException io) {
 							io.printStackTrace();
 						}
 					}
+						}
 				}
 						
 				}else if(e.getSource() == hamButton){
+					if(!lock){
 					if(filearray[1] != null){
 						File file = filearray[1];
 						fc = new JFileChooser(file);
@@ -158,15 +152,17 @@ public class FileConfig extends JPanel{
 							hamField.setText(theOutString);
 							filearray[1] = new File(theOutString);
 						try {
-							savePath();
+							FileReader.savePath(filearray);
 						} catch (IOException io) {
 							io.printStackTrace();
 						}
 					}
+						}
 				}
 						
 						
 				}else if(e.getSource() == spamButton){
+					if(!lock){
 					if(filearray[2] != null){
 						File file = filearray[2];
 						fc = new JFileChooser(file);
@@ -192,11 +188,12 @@ public class FileConfig extends JPanel{
 							spamField.setText(theOutString);
 							filearray[2] = new File(theOutString);
 						try {
-							savePath();
+							FileReader.savePath(filearray);
 						} catch (IOException io) {
 							io.printStackTrace();
 						}
 					}
+						}
 				}
 						
 						
@@ -207,72 +204,52 @@ public class FileConfig extends JPanel{
 					filearray[0] = null;
 					filearray[1] = null;
 					filearray[2] = null;
+					rulesField.setEnabled(true);
+					spamField.setEnabled(true);
+					hamField.setEnabled(true);
+					spamButton.setEnabled(true);
+					hamButton.setEnabled(true);
+					rulesButton.setEnabled(true);
+					load.setEnabled(true);
+					lock = false;
+					gui.repaint();
 				try {
-					savePath();
+					FileReader.savePath(filearray);
 				} catch (IOException io) {
 					io.printStackTrace();
 				}
 					
 					
 				}else if(e.getSource() == load){
-					if(verifyFiles()){
-						System.out.println("OK!");
+					if(!lock){
+					if(FileReader.loadAndValidate()){
+						FileReader.loadHam();
+						FileReader.loadRules();
+						FileReader.loadSpam();
+						gui.getRightSide().loadAutoConf();
+						rulesField.setEnabled(false);
+						spamField.setEnabled(false);
+						hamField.setEnabled(false);
+						spamButton.setEnabled(false);
+						hamButton.setEnabled(false);
+						rulesButton.setEnabled(false);
+						load.setEnabled(false);
+						lock = true;
+						gui.getManualConfig().enabled();
+						gui.getAutoConfig().enabled();
+						gui.repaint();
 					}else {
 						JOptionPane.showMessageDialog(null, "Tem de carregar os ficheiros restantes!!!");
+					}
 					}
 				}
 			}
 		};
 		return al;
 	}
-	
-	
-	private void savePath() throws IOException{
-		FileWriter fw = new FileWriter(new File("files/path.txt"));
-		for(File file : filearray){
-			if(file != null){
-				fw.write(file.getAbsolutePath() + "\n");
-			}else{
-				fw.write(" " + "\n");
-			}
-		}
-		fw.close();
+
+	public File getPathlist() {
+		return pathlist;
 	}
 	
-	private void loadPath()throws IOException{
-		BufferedReader in = new BufferedReader(new InputStreamReader (new FileInputStream(pathlist), "UTF8"));
-		String s;
-		int aux = 0;
-		while((s = in.readLine())!= null){
-			if(s.split("")[0] != null){
-				filearray[aux] = new File(s);
-				switch(aux){
-				case 0:
-					rulesField.setText(s);
-					break;
-				case 2:
-					spamField.setText(s);
-					break;
-				case 1:
-					hamField.setText(s);
-					break;
-				}
-				aux++;
-			}else{
-				filearray[aux] = null;
-				aux++;
-			}
-		}
-		in.close();
-	}
-	
-	private boolean verifyFiles(){
-		if(filearray.length > 0){
-			if(filearray[0] != null && filearray[1] != null && filearray[2] != null){
-				if(filearray[0].getName().contains(".cf") && filearray[1].getName().contains(".log") && filearray[2].getName().contains(".log")){
-					return true;
-				}else return false;
-			}else return false;
-		}else return false;
-	}
 }
