@@ -3,6 +3,10 @@ package mechanisms;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * @author Markiyan Pyekh
+ *
+ */
 public class Evaluation {
 	
 	private static int FP;
@@ -12,6 +16,11 @@ public class Evaluation {
 	private static ArrayList<Spam> spam = FileReader.getSpam_list();
 	private static ArrayList<Rule> rules = FileReader.getRules_list();
 	
+	/**
+	 * Função que calcula os FN, FP e Erros
+	 * @param current_values
+	 * @return ret
+	 */
 	public static int[]  evaluate(double[] current_values){
 		int[] ret = new int[3];
 		FP = 0;

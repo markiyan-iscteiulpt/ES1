@@ -10,6 +10,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
+/**
+ * @author Tiago Almeida, Markiyan Pyekh
+ *
+ */
 public class Gui extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
@@ -21,6 +25,11 @@ public class Gui extends JFrame{
 	private JLabel background;
 	private JPanel main_panel;
 
+	/**
+	 * Construtor da interface gráfica
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
 	public Gui() throws IOException, URISyntaxException{
 		setSize(new Dimension(1000, 615));
 		setTitle("AntiSpam Filter [Leisure Mailbox]");

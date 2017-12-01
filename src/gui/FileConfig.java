@@ -16,6 +16,10 @@ import javax.swing.JTextField;
 
 import mechanisms.FileReader;
 
+/**
+ * @author Tiago Almeida, Markiyan Pyekh
+ *
+ */
 public class FileConfig extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
@@ -33,6 +37,13 @@ public class FileConfig extends JPanel{
 	private Gui gui;
 	private boolean lock = false;
 	
+	
+	/**
+	 * Construtor da parte da escolha dos ficheiros da Gui
+	 * @param gui
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
 	public FileConfig(Gui gui) throws IOException, URISyntaxException {
 		this.gui = gui;
 		setLayout(null);
@@ -86,6 +97,12 @@ public class FileConfig extends JPanel{
 		load.addActionListener(listener());
 	}	
 	
+	
+	/**
+	 * Listener que espicifica o que cada botão executa
+	 * @return al
+	 * @throws IOException
+	 */
 	private ActionListener listener() throws IOException{
 		ActionListener al = new ActionListener(){
 			@Override

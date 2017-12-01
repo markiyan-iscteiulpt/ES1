@@ -4,22 +4,35 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.beans.*;
 
-public class TableCellListener implements PropertyChangeListener, Runnable
-{
+/**
+ * @author Markiyan Pyekh
+ *	Classe para permitir alterar pesos na tabela
+ */
+public class TableCellListener implements PropertyChangeListener, Runnable {
 	private JTable table;
 	private Action action;
-
 	private int row;
 	private int column;
 	private Object oldValue;
 	private Object newValue;
 
+	/**
+	 * @param table
+	 * @param action
+	 */
 	public TableCellListener(JTable table, Action action){
 		this.table = table;
 		this.action = action;
 		this.table.addPropertyChangeListener( this );
 	}
 
+	/**
+	 * @param table
+	 * @param row
+	 * @param column
+	 * @param oldValue
+	 * @param newValue
+	 */
 	private TableCellListener(JTable table, int row, int column, Object oldValue, Object newValue){
 		this.table = table;
 		this.row = row;
@@ -48,7 +61,9 @@ public class TableCellListener implements PropertyChangeListener, Runnable
 		return table;
 	}
 	
-	
+	/* (non-Javadoc)
+	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent e){
 		if ("tableCellEditor".equals(e.getPropertyName())){
@@ -60,11 +75,12 @@ public class TableCellListener implements PropertyChangeListener, Runnable
 	}
 
 	private void processEditingStarted(){
-
 		SwingUtilities.invokeLater( this );
 	}
 	
-	
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run(){
 		row = table.convertRowIndexToModel( table.getEditingRow() );
@@ -72,17 +88,12 @@ public class TableCellListener implements PropertyChangeListener, Runnable
 		oldValue = table.getModel().getValueAt(row, column);
 		newValue = null;
 	}
-
 	
 	private void processEditingStopped(){
 		newValue = table.getModel().getValueAt(row, column);
-
-
 		if (! newValue.equals(oldValue)){
-
 			TableCellListener tcl = new TableCellListener(
 				getTable(), getRow(), getColumn(), getOldValue(), getNewValue());
-
 			ActionEvent event = new ActionEvent(
 				tcl,
 				ActionEvent.ACTION_PERFORMED,
