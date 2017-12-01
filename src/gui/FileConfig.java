@@ -1,10 +1,12 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -17,7 +19,6 @@ import mechanisms.FileReader;
 public class FileConfig extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
-	private final File pathlist = new File("files/path.txt");
 	private File[] filearray = new File[3];
 	private JTextField rulesField;
 	private JTextField spamField;
@@ -32,7 +33,7 @@ public class FileConfig extends JPanel{
 	private Gui gui;
 	private boolean lock = false;
 	
-	public FileConfig(Gui gui) throws IOException {
+	public FileConfig(Gui gui) throws IOException, URISyntaxException {
 		this.gui = gui;
 		setLayout(null);
 		setBounds(16, 21, 501, 173);
@@ -75,6 +76,7 @@ public class FileConfig extends JPanel{
 		add(reset);
 		add(load);
 		
+		if(!FileReader.configureAmb()){JOptionPane.showMessageDialog(null, "Foi impossivel criar ficheiros necessarios para o funcionamento do programa!");}
 		filearray = FileReader.loadPath(rulesField, spamField, hamField);
 		
 		rulesButton.addActionListener(listener());
@@ -120,6 +122,8 @@ public class FileConfig extends JPanel{
 							FileReader.savePath(filearray);
 						} catch (IOException io) {
 							io.printStackTrace();
+						} catch (URISyntaxException e1) {
+							e1.printStackTrace();
 						}
 					}
 						}
@@ -155,6 +159,8 @@ public class FileConfig extends JPanel{
 							FileReader.savePath(filearray);
 						} catch (IOException io) {
 							io.printStackTrace();
+						} catch (URISyntaxException e1) {
+							e1.printStackTrace();
 						}
 					}
 						}
@@ -191,12 +197,12 @@ public class FileConfig extends JPanel{
 							FileReader.savePath(filearray);
 						} catch (IOException io) {
 							io.printStackTrace();
+						} catch (URISyntaxException e1) {
+							e1.printStackTrace();
 						}
 					}
 						}
 				}
-						
-						
 				}else if(e.getSource() == reset){
 					rulesField.setText("");
 					hamField.setText("");
@@ -217,29 +223,35 @@ public class FileConfig extends JPanel{
 					FileReader.savePath(filearray);
 				} catch (IOException io) {
 					io.printStackTrace();
+				} catch (URISyntaxException e1) {
+					e1.printStackTrace();
 				}
 					
 					
 				}else if(e.getSource() == load){
 					if(!lock){
-					if(FileReader.loadAndValidate()){
-						FileReader.loadHam();
-						FileReader.loadRules();
-						FileReader.loadSpam();
-						gui.getRightSide().loadAutoConf();
-						rulesField.setEnabled(false);
-						spamField.setEnabled(false);
-						hamField.setEnabled(false);
-						spamButton.setEnabled(false);
-						hamButton.setEnabled(false);
-						rulesButton.setEnabled(false);
-						load.setEnabled(false);
-						lock = true;
-						gui.getManualConfig().enabled();
-						gui.getAutoConfig().enabled();
-						gui.repaint();
-					}else {
-						JOptionPane.showMessageDialog(null, "Tem de carregar os ficheiros restantes!!!");
+					try {
+						if(FileReader.loadAndValidate()){
+							FileReader.loadHam();
+							FileReader.loadRules();
+							FileReader.loadSpam();
+							gui.getRightSide().loadAutoConf();
+							rulesField.setEnabled(false);
+							spamField.setEnabled(false);
+							hamField.setEnabled(false);
+							spamButton.setEnabled(false);
+							hamButton.setEnabled(false);
+							rulesButton.setEnabled(false);
+							load.setEnabled(false);
+							lock = true;
+							gui.getManualConfig().enabled();
+							gui.getAutoConfig().enabled();
+							gui.repaint();
+						}else {
+							JOptionPane.showMessageDialog(null, "Tem de carregar os ficheiros restantes!!!");
+						}
+					} catch (HeadlessException | IOException e1) {
+						e1.printStackTrace();
 					}
 					}
 				}
@@ -247,9 +259,4 @@ public class FileConfig extends JPanel{
 		};
 		return al;
 	}
-
-	public File getPathlist() {
-		return pathlist;
-	}
-	
 }

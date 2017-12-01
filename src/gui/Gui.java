@@ -1,10 +1,9 @@
 package gui;
 
 import java.awt.Dimension;
-import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,11 +17,14 @@ public class Gui extends JFrame{
 	private AutoConfig auto;
 	private ManualConfig manual;
 	private RightSide rightSide;
-	private File bg = new File("background/main_design.png");
+	private ImageIcon ico = new ImageIcon(Gui.class.getResource("/main_design.png"));
 	private JLabel background;
 	private JPanel main_panel;
 
-	public Gui() throws IOException{
+	public Gui() throws IOException, URISyntaxException{
+		setSize(new Dimension(1000, 615));
+		setTitle("AntiSpam Filter [Leisure Mailbox]");
+		
 		main_panel = new JPanel();
 		main_panel.setLayout(null);
 		
@@ -31,9 +33,7 @@ public class Gui extends JFrame{
 		this.manual = new ManualConfig(this);
 		this.rightSide = new RightSide(this);
 		
-		setSize(new Dimension(1000, 615));
-		setTitle("AntiSpamConfigurationForLeisureMailbox");
-		background = new JLabel(new ImageIcon(ImageIO.read(bg)));
+		background = new JLabel(ico);
 		background.setBounds(0, 0, 1000, 600);
 		
 		main_panel.add(file);
@@ -42,17 +42,11 @@ public class Gui extends JFrame{
 		main_panel.add(manual);
 		main_panel.add(background);
 	
-		
 		add(main_panel);
 		setResizable(false);
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		/*this.AutoConfig= new AutoConfig(this);
-		this.ManualConfig= new ManualConfig(this);*/
-		
-		
 	}
 
 	public RightSide getRightSide() {
@@ -66,5 +60,4 @@ public class Gui extends JFrame{
 	public AutoConfig getAutoConfig(){
 		return auto;
 	}
-	
 }

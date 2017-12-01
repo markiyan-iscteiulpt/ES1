@@ -5,48 +5,40 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import javax.swing.JTextField;
 
 public class FileReader {
 	
-	private static File paths = new File("files/path.txt");
+	private static File appdata = new File(System.getenv("APPDATA") + "\\" + "AntiSpam");
+	private static File path_file = new File(appdata.getAbsolutePath()+"/path.txt");
 	
 	private static boolean validated = false;
-	
 	private static File rules_path;
 	private static File ham_path;
 	private static File spam_path;
+	
+	private static ArrayList<String> paths = new ArrayList<>();
 	
 	private static ArrayList<Rule> rules_list = new ArrayList<>();
 	private static ArrayList<Ham> ham_list = new ArrayList<>();
 	private static ArrayList<Spam> spam_list = new ArrayList<>();
 	
 	
-	public static boolean loadAndValidate(){
-		BufferedReader in;
-		ArrayList<String> path_list = new ArrayList<>();
-		try {
-			in = new BufferedReader(new InputStreamReader(new FileInputStream(paths), "UTF8"));
-			String line;
-				while((line = in.readLine())!= null){
-					path_list.add(line);
-				}
-				in.close();
-		} catch (IOException e){
-		}
-			
-		if(!path_list.get(0).contains(".cf")){ return false;}
-		if(!path_list.get(1).contains(".log")){ return false;}
-		if(!path_list.get(2).contains(".log")){ return false;}
+	public static boolean loadAndValidate() throws IOException{	
+		try {FileReader.loadPath();} catch (URISyntaxException e){}
+		if(!paths.get(0).contains(".cf")){ return false;}
+		if(!paths.get(1).contains(".log")){ return false;}
+		if(!paths.get(2).contains(".log")){ return false;}
 		
-		setRules_path(new File(path_list.get(0)));
-		setHam_path(new File(path_list.get(2)));
-		setSpam_path(new File(path_list.get(1)));
-		
-		
+		setRules_path(new File(paths.get(0)));
+		setHam_path(new File(paths.get(2)));
+		setSpam_path(new File(paths.get(1)));
 		validated = true;
 		return true;
 	}
@@ -113,13 +105,15 @@ public class FileReader {
 		
 	}
 	
-	public static File[] loadPath(JTextField rulesField, JTextField spamField, JTextField hamField)throws IOException{
-		BufferedReader in = new BufferedReader(new InputStreamReader (new FileInputStream(paths), "UTF8"));
+	public static File[] loadPath(JTextField rulesField, JTextField spamField, JTextField hamField)throws IOException, URISyntaxException{
+		InputStream stream = new FileInputStream(path_file);
+		BufferedReader in = new BufferedReader(new InputStreamReader(stream));
 		File[] filearray = new File[3];
 		String s;
 		int aux = 0;
 		while((s = in.readLine())!= null){
 			if(s.split("")[0] != null){
+				paths.add(s);
 				filearray[aux] = new File(s);
 				switch(aux){
 				case 0:
@@ -142,16 +136,20 @@ public class FileReader {
 		return filearray;
 	}
 	
-	public static void savePath(File[] filearray) throws IOException{
-		FileWriter fw = new FileWriter(new File("files/path.txt"));
+	
+	public static void savePath(File[] filearray) throws IOException, URISyntaxException{
+		PrintWriter writer = new PrintWriter(path_file, "UTF-8");
 		for(File file : filearray){
 			if(file != null){
-				fw.write(file.getAbsolutePath() + "\n");
+				System.out.println(file.getAbsolutePath());
+				writer.write(file.getAbsolutePath() + "\n");
+				writer.flush();
 			}else{
-				fw.write(" " + "\n");
+				writer.write(" " + "\n");
+				writer.flush();
 			}
 		}
-		fw.close();
+		writer.close();
 	}
 	
 	public static void saveConfig(Object[][] current_man) {
@@ -170,11 +168,14 @@ public class FileReader {
 	
 	
 	public static Object[][] readNSGAII(){
-		File f = new File("experimentBaseDirectory/referenceFronts/AntiSpamFilterProblem.NSGAII.rs");
+		int l = 1;
 		Object[][] new_rules = null;
 		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF8"));
-			String line = in.readLine();
+			String line = "";
+			BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(appdata+ "/referenceFronts/AntiSpamFilterProblem.NSGAII.rs")));
+			for(int q = 0; q <= l; q++){
+				line = in.readLine();
+			}
 			String[] rules = line.split(" ");
 			rules_list = new ArrayList<>();
 			loadRules();
@@ -191,11 +192,41 @@ public class FileReader {
 		return new_rules;
 	}
 	
+	public static boolean configureAmb() {
+		if(!appdata.isDirectory()){
+			new File(appdata.getAbsolutePath()).mkdir();
+			if(!appdata.isDirectory()){return false;}
+		}
+		if(appdata.listFiles().length==0){
+			try {
+				new File(appdata.getAbsoluteFile()+"/path.txt").createNewFile();
+			} catch (IOException e) {
+				return false;
+			}
+		}else{
+			boolean aux = false;
+			for(File f : appdata.listFiles()){
+				if(f.getName().contains("path.txt")){
+					aux = true;
+				}
+			}
+			return aux;
+		}
+		return true;
+	}
 	
-	
-	
-	
-	
+	public static void loadPath()throws IOException, URISyntaxException{
+		InputStream stream = new FileInputStream(path_file);
+		BufferedReader in = new BufferedReader(new InputStreamReader(stream));
+		String s;
+		while((s = in.readLine())!= null){
+			if(s.split("")[0] != null){
+				paths.add(s);
+			}
+		}
+		in.close();
+	}
+
 	public static boolean isValidated() {
 		return validated;
 	}
@@ -263,5 +294,10 @@ public class FileReader {
 
 	public static void setSpam_list(ArrayList<Spam> spam_list) {
 		FileReader.spam_list = spam_list;
+	}
+
+
+	public static String getAppdataDir() {
+		return appdata.getAbsolutePath();
 	}
 }

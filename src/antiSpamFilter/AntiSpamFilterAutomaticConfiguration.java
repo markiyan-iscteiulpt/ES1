@@ -21,11 +21,13 @@ import org.uma.jmetal.util.experiment.component.GenerateReferenceParetoSetAndFro
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
+import mechanisms.FileReader;
+
 public class AntiSpamFilterAutomaticConfiguration {
   private static final int INDEPENDENT_RUNS = 5 ;
 
   public static void AutomaticMode() throws IOException {
-    String experimentBaseDirectory = "experimentBaseDirectory";
+    String experimentBaseDirectory = FileReader.getAppdataDir();
 
     List<ExperimentProblem<DoubleSolution>> problemList = new ArrayList<>();
     problemList.add(new ExperimentProblem<>(new AntiSpamFilterProblem()));
