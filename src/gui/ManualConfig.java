@@ -11,6 +11,10 @@ import javax.swing.JPanel;
 import mechanisms.Evaluation;
 import mechanisms.FileReader;
 
+/**
+ * @author Tiago Almeida, Markiyan Pyekh
+ *
+ */
 public class ManualConfig extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
@@ -20,9 +24,12 @@ public class ManualConfig extends JPanel{
 	private JButton manual;
 	private JButton run;
 	private JButton save;
-	
 	private Gui gui;
 	
+	/**
+	 * Construtor da parte Manual da Gui
+	 * @param gui
+	 */
 	public ManualConfig(Gui gui) {
 		this.gui = gui;
 		setLayout(null);
@@ -63,6 +70,10 @@ public class ManualConfig extends JPanel{
 		save.addActionListener(listener());
 	}
 	
+	/**
+	 * Listener que especifica o que cada botão executa
+	 * @return al
+	 */
 	private ActionListener listener(){
 		ActionListener al = new ActionListener(){
 			@Override
@@ -95,7 +106,10 @@ public class ManualConfig extends JPanel{
 		return al;
 	}
 	
-	
+	/**
+	 * Método que actualiza os FN, FP e Erros
+	 * @param arra
+	 */
 	private void updateStat(int [] arra){
 		String f = "";
 		f+=arra[1];

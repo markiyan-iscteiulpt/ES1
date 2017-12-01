@@ -13,6 +13,10 @@ import antiSpamFilter.AntiSpamFilterAutomaticConfiguration;
 import mechanisms.Evaluation;
 import mechanisms.FileReader;
 
+/**
+ * @author Tiago Almeida, Markiyan Pyekh
+ *
+ */
 public class AutoConfig extends JPanel{
 
 	private static final long serialVersionUID = 1L;
@@ -24,6 +28,10 @@ public class AutoConfig extends JPanel{
 	private JLabel filter;
 	private Gui gui;
 	
+	/**
+	 * Construtor da parte Automática da Gui
+	 * @param gui
+	 */
 	public AutoConfig(Gui gui) {
 		this.gui = gui;
 		setLayout(null);
@@ -66,52 +74,62 @@ public class AutoConfig extends JPanel{
 		
 	}
 		
-		private ActionListener listener(){
-			ActionListener al = new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if(e.getSource() == auto){
-						run.setEnabled(true);
-					}else if(e.getSource() == run){
-						try {
-							AntiSpamFilterAutomaticConfiguration.AutomaticMode();
-							Object[][] a = FileReader.readNSGAII();
-							gui.getRightSide().updateAuto(a);
-							save.setEnabled(true);
-							updateStat();
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-					}else if(e.getSource() == save){
-						FileReader.saveConfig(gui.getRightSide().getCurrent_auto());
+	/**
+	 * Listener que especifica o que cada botão executa
+	 * @return al
+	 */
+	private ActionListener listener(){
+		ActionListener al = new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == auto){
+					run.setEnabled(true);
+				}else if(e.getSource() == run){
+					try {
+						AntiSpamFilterAutomaticConfiguration.AutomaticMode();
+						Object[][] a = FileReader.readNSGAII();
+						gui.getRightSide().updateAuto(a);
+						save.setEnabled(true);
+						updateStat();
+					} catch (IOException e1) {
+						e1.printStackTrace();
 					}
+				}else if(e.getSource() == save){
+					FileReader.saveConfig(gui.getRightSide().getCurrent_auto());
 				}
-			};
-			return al;
+			}
+		};
+		return al;
 	}
 
-		public void enabled() {
-			auto.setEnabled(true);
-		}
+	/**
+	 * Método que mantem o botão automático ativo
+	 */
+	public void enabled() {
+		auto.setEnabled(true);
+	}
 		
-		private void updateStat(){
-			String f = "";
-			double[] a = new double[gui.getRightSide().getCurrent_auto().length];
-			Object[][] b = gui.getRightSide().getCurrent_auto();
-			for(int i = 0; i < a.length; i++){
-				a[i] = (double) b[i][1];}
-			f+=Evaluation.evaluate(a)[0];
-			String ff = "";
-			ff+= Evaluation.evaluate(a)[1];
-			fn.setText(f);
-			fp.setText(ff);
+	/**
+	 * Método que actualiza os FN, FP e Erros
+	 */
+	private void updateStat(){
+		String f = "";
+		double[] a = new double[gui.getRightSide().getCurrent_auto().length];
+		Object[][] b = gui.getRightSide().getCurrent_auto();
+		for(int i = 0; i < a.length; i++){
+			a[i] = (double) b[i][1];}
+		f+=Evaluation.evaluate(a)[0];
+		String ff = "";
+		ff+= Evaluation.evaluate(a)[1];
+		fn.setText(f);
+		fp.setText(ff);
 			
-			int rate = (Evaluation.evaluate(a)[0]+ Evaluation.evaluate(a)[1]);
-			String tt = "";
-			tt+=rate;
-			filter.setText(tt);
+		int rate = (Evaluation.evaluate(a)[0]+ Evaluation.evaluate(a)[1]);
+		String tt = "";
+		tt+=rate;
+		filter.setText(tt);
 			
-			repaint();
-			gui.repaint();
-		}
+		repaint();
+		gui.repaint();
+	}
 }

@@ -21,21 +21,28 @@ import mechanisms.FileReader;
 import mechanisms.Rule;
 import mechanisms.TableCellListener;
 
+/**
+ * @author Markiyan Pyekh
+ *
+ */
 public class RightSide extends JPanel{
 
 	private static final long serialVersionUID = 4361279460245695200L;
 	private JTabbedPane tab = new JTabbedPane();
-	
 	private String[] columnNames = {"Rule", "Weight"};
 	private Object[][] data = {{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},
 								{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},
-								{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""}};
-			
+								{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""},{"", ""}};		
 	private JTable auto_table;
 	private JTable man_table;
 	private Object[][] current_auto;
 	private Object[][] current_man;
 	
+	/**
+	 * Construtor do lado direito da Gui(tabela)
+	 * @param gui
+	 * @throws IOException
+	 */
 	public RightSide(Gui gui) throws IOException {
 		setLayout(null);
 		setBounds(560, 21, 420, 553);
@@ -50,11 +57,17 @@ public class RightSide extends JPanel{
 		add(tab);
 	}
 	
+	/**
+	 * Método para adicionar o tab manual por cima da tabela
+	 */
 	public void addManTab(){
 		tab.add("Manual", manualConfig());
 	}
 	
-	
+	/**
+	 * Função para construção da tabela manual
+	 * @return pan
+	 */
 	private JPanel manualConfig(){
 		JPanel pan = new JPanel();
 		pan.setLayout(null);
@@ -91,7 +104,11 @@ public class RightSide extends JPanel{
 		return pan;
 	}
 	
-	
+	/**
+	 * Função para construção da tabela automática
+	 * @return pan
+	 * @throws IOException
+	 */
 	private JPanel autoConfig() throws IOException{
 		JPanel pan = new JPanel();
 		pan.setLayout(null);
@@ -114,6 +131,9 @@ public class RightSide extends JPanel{
 		return pan;
 	}
 	
+	/**
+	 * Método que carrega os dados para a tabela automática
+	 */
 	public void loadAutoConf(){
 		if(FileReader.isValidated()){
 		ArrayList<Rule> rule = FileReader.getRules_list();
@@ -158,6 +178,10 @@ public class RightSide extends JPanel{
 		return this.tab;
 	}
 
+	/**
+	 * Método que actualiza a tabela automática
+	 * @param a
+	 */
 	public void updateAuto(Object[][] a) {
 		current_auto = a;
 		TableModel model = new DefaultTableModel(a, columnNames);

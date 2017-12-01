@@ -13,23 +13,28 @@ import java.util.ArrayList;
 
 import javax.swing.JTextField;
 
+/**
+ * @author Markiyan Pyekh
+ *
+ */
 public class FileReader {
 	
 	private static File appdata = new File(System.getenv("APPDATA") + "\\" + "AntiSpam");
 	private static File path_file = new File(appdata.getAbsolutePath()+"/path.txt");
-	
 	private static boolean validated = false;
 	private static File rules_path;
 	private static File ham_path;
 	private static File spam_path;
-	
 	private static ArrayList<String> paths = new ArrayList<>();
-	
 	private static ArrayList<Rule> rules_list = new ArrayList<>();
 	private static ArrayList<Ham> ham_list = new ArrayList<>();
 	private static ArrayList<Spam> spam_list = new ArrayList<>();
 	
-	
+	/**
+	 * Método para carregar e validar
+	 * @return validated
+	 * @throws IOException
+	 */
 	public static boolean loadAndValidate() throws IOException{	
 		try {FileReader.loadPath();} catch (URISyntaxException e){}
 		if(!paths.get(0).contains(".cf")){ return false;}
@@ -43,7 +48,9 @@ public class FileReader {
 		return true;
 	}
 	
-	
+	/**
+	 * Método que carrega o ficheiro Ham
+	 */
 	public static void loadHam(){
 		if(isValidated()){
 			ham_list.clear();
@@ -66,6 +73,9 @@ public class FileReader {
 			} catch (IOException e) {}}
 	}
 	
+	/**
+	 * Método que carrega o ficheiro Spam
+	 */
 	public static void loadSpam(){
 		if(isValidated()){
 			spam_list.clear();
@@ -88,7 +98,9 @@ public class FileReader {
 			} catch (IOException e) {}}
 	}
 	
-	
+	/**
+	 * Método que carrega o ficheiro Rules
+	 */
 	public static void loadRules(){
 		if(isValidated()){
 		try {
@@ -102,9 +114,17 @@ public class FileReader {
 				in.close();
 		} catch (IOException e) {}
 		}
-		
 	}
 	
+	/**
+	 * Função que carrega os caminhos do ficheiro paths.txt
+	 * @param rulesField
+	 * @param spamField
+	 * @param hamField
+	 * @return filearray
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
 	public static File[] loadPath(JTextField rulesField, JTextField spamField, JTextField hamField)throws IOException, URISyntaxException{
 		InputStream stream = new FileInputStream(path_file);
 		BufferedReader in = new BufferedReader(new InputStreamReader(stream));
@@ -137,6 +157,12 @@ public class FileReader {
 	}
 	
 	
+	/**
+	 * Método que grava o caminho no ficheiro path.txt
+	 * @param filearray
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
 	public static void savePath(File[] filearray) throws IOException, URISyntaxException{
 		PrintWriter writer = new PrintWriter(path_file, "UTF-8");
 		for(File file : filearray){
@@ -152,6 +178,11 @@ public class FileReader {
 		writer.close();
 	}
 	
+	
+	/**
+	 * Método que grava as regras e os pesos
+	 * @param current_man
+	 */
 	public static void saveConfig(Object[][] current_man) {
 		try {
 			FileWriter f = new FileWriter(rules_path);
@@ -166,7 +197,10 @@ public class FileReader {
 		}
 	}
 	
-	
+	/**
+	 * Função que através do algoritmo NSGAII adiciona a cada regra o respectivo peso
+	 * @return new_rules
+	 */
 	public static Object[][] readNSGAII(){
 		int l = 1;
 		Object[][] new_rules = null;
@@ -187,11 +221,14 @@ public class FileReader {
 			}
 
 		}catch(IOException e){
-			
 		}
 		return new_rules;
 	}
 	
+	/**
+	 * Método para a criação de ficheiros de modo a que o programa funcione corretamente
+	 * @return aux
+	 */
 	public static boolean configureAmb() {
 		if(!appdata.isDirectory()){
 			new File(appdata.getAbsolutePath()).mkdir();
@@ -215,6 +252,11 @@ public class FileReader {
 		return true;
 	}
 	
+	/**
+	 * Método que carrega os ficheiros a partir do ficheiro path.txt
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
 	public static void loadPath()throws IOException, URISyntaxException{
 		InputStream stream = new FileInputStream(path_file);
 		BufferedReader in = new BufferedReader(new InputStreamReader(stream));
@@ -231,71 +273,57 @@ public class FileReader {
 		return validated;
 	}
 
-
 	public static void setValidated(boolean validated) {
 		FileReader.validated = validated;
 	}
-
 
 	public static File getRules_path() {
 		return rules_path;
 	}
 
-
 	public static void setRules_path(File rules_path) {
 		FileReader.rules_path = rules_path;
 	}
-
 
 	public static File getHam_path() {
 		return ham_path;
 	}
 
-
 	public static void setHam_path(File ham_path) {
 		FileReader.ham_path = ham_path;
 	}
-
 
 	public static File getSpam_path() {
 		return spam_path;
 	}
 
-
 	public static void setSpam_path(File spam_path) {
 		FileReader.spam_path = spam_path;
 	}
-
 
 	public static ArrayList<Rule> getRules_list() {
 		return rules_list;
 	}
 
-
 	public static void setRules_list(ArrayList<Rule> rules_list) {
 		FileReader.rules_list = rules_list;
 	}
-
 
 	public static ArrayList<Ham> getHam_list() {
 		return ham_list;
 	}
 
-
 	public static void setHam_list(ArrayList<Ham> ham_list) {
 		FileReader.ham_list = ham_list;
 	}
-
 
 	public static ArrayList<Spam> getSpam_list() {
 		return spam_list;
 	}
 
-
 	public static void setSpam_list(ArrayList<Spam> spam_list) {
 		FileReader.spam_list = spam_list;
 	}
-
 
 	public static String getAppdataDir() {
 		return appdata.getAbsolutePath();

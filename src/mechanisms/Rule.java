@@ -1,10 +1,19 @@
 package mechanisms;
 
+/**
+ * @author Markiyan Pyekh
+ *
+ */
 public class Rule {
 
 	private String rule;
 	private double weight;
 	
+	/**
+	 * Construtor da regra
+	 * @param rule
+	 * @param weight
+	 */
 	public Rule(String rule, double weight) {
 		this.rule = rule;
 		this.weight = weight;
@@ -25,6 +34,4 @@ public class Rule {
 	public void setWeight(double weight) {
 		this.weight = weight;
 	}
-	
-	
 }
