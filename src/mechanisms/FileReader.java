@@ -31,11 +31,12 @@ public class FileReader {
 	
 	
 	public static boolean loadAndValidate() throws IOException{	
-		try {FileReader.loadPath();} catch (URISyntaxException e){}
-		if(!paths.get(0).contains(".cf")){ return false;}
-		if(!paths.get(1).contains(".log")){ return false;}
-		if(!paths.get(2).contains(".log")){ return false;}
-		
+		try {FileReader.loadPath();} catch (URISyntaxException e){ }
+		if(paths.size()>=2){
+		if(!paths.get(0).contains(".cf")){return false;}
+		if(!paths.get(1).contains(".log")){return false;}
+		if(!paths.get(2).contains(".log")){return false;}
+		}else{return false;}
 		setRules_path(new File(paths.get(0)));
 		setHam_path(new File(paths.get(2)));
 		setSpam_path(new File(paths.get(1)));
@@ -219,10 +220,9 @@ public class FileReader {
 		InputStream stream = new FileInputStream(path_file);
 		BufferedReader in = new BufferedReader(new InputStreamReader(stream));
 		String s;
+		paths.clear();
 		while((s = in.readLine())!= null){
-			if(s.split("")[0] != null){
-				paths.add(s);
-			}
+			paths.add(s);
 		}
 		in.close();
 	}
