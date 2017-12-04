@@ -11,7 +11,7 @@ public class Solution {
 	private double fn;
 	
 	/**
-	 * Construtor da solução
+	 * Construtor para a solução
 	 * @param line_number
 	 * @param fn
 	 * @param fp
