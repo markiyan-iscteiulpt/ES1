@@ -1,11 +1,21 @@
 package mechanisms;
 
+/**
+ * @author Tiago Almeida
+ *
+ */
 public class Solution {
 	
-	int line_number;
-	double fp;
-	double fn;
+	private int line_number;
+	private double fp;
+	private double fn;
 	
+	/**
+	 * Construtor da solução
+	 * @param line_number
+	 * @param fn
+	 * @param fp
+	 */
 	public Solution(int line_number, double fn, double fp) {
 		this.line_number = line_number;
 		this.fp = fp;

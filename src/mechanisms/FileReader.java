@@ -16,7 +16,7 @@ import java.util.Comparator;
 import javax.swing.JTextField;
 
 /**
- * @author Markiyan Pyekh
+ * @author Markiyan Pyekh, Tiago Almeida
  *
  */
 public class FileReader {
@@ -229,6 +229,10 @@ public class FileReader {
 	}
 	
 	
+	/**
+	 * Função que devolve a melhor solução de acordo com o mail definido
+	 * @return ret
+	 */
 	private static int bestSolution(){
 		int ret = 1;
 		ArrayList<Solution> solutions = new ArrayList<>();
