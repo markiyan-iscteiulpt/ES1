@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.JTextField;
 
@@ -203,7 +205,7 @@ public class FileReader {
 	 * @return new_rules
 	 */
 	public static Object[][] readNSGAII(){
-		int l = 1;
+		int l = bestSolution();
 		Object[][] new_rules = null;
 		try {
 			String line = "";
@@ -224,6 +226,35 @@ public class FileReader {
 		}catch(IOException e){
 		}
 		return new_rules;
+	}
+	
+	
+	private static int bestSolution(){
+		int ret = 1;
+		ArrayList<Solution> solutions = new ArrayList<>();
+		File f = new File(appdata+ "/referenceFronts/AntiSpamFilterProblem.NSGAII.rf");
+		try {
+			String line = "";
+			int aux = 0;
+			BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF8"));
+			while((line = in.readLine())!=null){
+				solutions.add(new Solution(aux, Double.parseDouble((String)line.split(" ")[0]), Double.parseDouble((String)line.split(" ")[1])));
+				aux++;
+			}
+		in.close();
+		}catch(IOException e){}
+		
+		
+		Collections.sort(solutions, new Comparator<Solution>() {
+		    @Override
+		    public int compare(Solution o1, Solution o2) {
+		        return (int) (o1.getFn() - o2.getFn());
+		    }
+		});
+		
+		ret = solutions.get(solutions.size()-1).getLine_number();
+		
+		return ret;
 	}
 	
 	/**
