@@ -1,4 +1,4 @@
-![alt text](/LogoISCTE-IUL.jpg)
+![alt text](/Logo.jpg)
 
 
 **EIC1**
