@@ -5,9 +5,9 @@
 
 Grupo **32**
 
-- [69362] Tiago Almeida (Scrum Master)
+- [65930] Márcio Simões (Scrum Master)
 - [69223] Markiyan Pyekh (Developer) 
-- [65930] Márcio Simões (Developer)
+- [69362] Tiago Almeida (Developer)
 - [64883] Francisco Araújo (Quality Manager)
 
 AntiSpam Configuration for **Leisure Mailbox**
