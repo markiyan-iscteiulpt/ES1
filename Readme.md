@@ -1,9 +1,15 @@
-EIC1
+![alt text](/LogoISCTE-IUL.jpg)
 
-Grupo 32
 
-69362, Tiago Almeida, Scrum Master 69223, Markiyan Pyekh, Developer 65930, Márcio Simões, Developer 64883, Francisco Araújo, Quality Manager
+**EIC1**
 
-AntiSpamConfigurationForLeisureMailbox
+Grupo **32**
+
+[69362] Tiago Almeida (Scrum Master)
+[69223] Markiyan Pyekh (Developer) 
+[65930] Márcio Simões (Developer)
+[64883] Francisco Araújo (Quality Manager)
+
+AntiSpam Configuration for **Leisure Mailbox**
 
 Link para um vídeo no youtube com a demonstração da aplicação final desenvolvida (ex: http://...)
