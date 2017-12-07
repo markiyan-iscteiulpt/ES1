@@ -33,7 +33,7 @@ public class TableCellListener implements PropertyChangeListener, Runnable {
 	 * @param oldValue
 	 * @param newValue
 	 */
-	private TableCellListener(JTable table, int row, int column, Object oldValue, Object newValue){
+	public TableCellListener(JTable table, int row, int column, Object oldValue, Object newValue){
 		this.table = table;
 		this.row = row;
 		this.column = column;
