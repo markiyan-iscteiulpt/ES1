@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClassDiagram>
+    <Class name="gui.FileConfig" x="367" y="58">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="gui.Gui" endpointName="gui" kind="Simple"/>
+        <Communication destinationClassName="gui.RightSide"/>
+        <Communication destinationClassName="mechanisms.FileReader"/>
+        <Communication destinationClassName="gui.ManualConfig"/>
+        <Communication destinationClassName="gui.AutoConfig"/>
+    </Class>
+    <Class name="mechanisms.TableCellListener" x="377" y="320">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="gui.ManualConfig" x="211" y="233">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="gui.Gui" endpointName="gui" kind="Simple"/>
+        <Communication destinationClassName="gui.RightSide"/>
+        <Communication destinationClassName="mechanisms.FileReader"/>
+        <Communication destinationClassName="mechanisms.Evaluation"/>
+    </Class>
+    <Class name="antiSpamFilter.AntiSpamFilterProblem" x="509" y="27">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Communication destinationClassName="mechanisms.Evaluation"/>
+    </Class>
+    <Class name="mechanisms.Evaluation" x="835" y="55">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="mechanisms.Ham"
+            endpointName="ham" kind="Simple"/>
+        <Association destinationClassName="mechanisms.Rule"
+            endpointName="rules" kind="Simple"/>
+        <Association destinationClassName="mechanisms.Spam"
+            endpointName="spam" kind="Simple"/>
+        <Communication destinationClassName="mechanisms.FileReader"/>
+        <Communication destinationClassName="mechanisms.Ham"/>
+        <Communication destinationClassName="mechanisms.Spam"/>
+    </Class>
+    <Class name="mechanisms.Ham" x="919" y="174">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="gui.Gui" x="184" y="30">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="gui.AutoConfig"
+            endpointName="auto" kind="Simple"/>
+        <Association destinationClassName="gui.FileConfig"
+            endpointName="file" kind="Simple"/>
+        <Association destinationClassName="gui.RightSide"
+            endpointName="rightSide" kind="Simple"/>
+        <Association destinationClassName="gui.ManualConfig"
+            endpointName="manual" kind="Simple"/>
+    </Class>
+    <Class name="gui.RightSide" x="13" y="197">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Communication destinationClassName="mechanisms.FileReader"/>
+        <Communication destinationClassName="mechanisms.TableCellListener"/>
+        <Communication destinationClassName="mechanisms.Rule"/>
+    </Class>
+    <Class name="mechanisms.FileReader" x="719" y="298">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="mechanisms.Rule"
+            endpointName="rules_list" kind="Simple"/>
+        <Association destinationClassName="mechanisms.Ham"
+            endpointName="ham_list" kind="Simple"/>
+        <Association destinationClassName="mechanisms.Spam"
+            endpointName="spam_list" kind="Simple"/>
+        <Communication destinationClassName="mechanisms.Solution"/>
+        <Communication destinationClassName="mechanisms.Rule"/>
+    </Class>
+    <Class name="mechanisms.Solution" x="756" y="370">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="mechanisms.Rule" x="729" y="169">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="gui.AutoConfig" x="5" y="28">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="gui.Gui" endpointName="gui" kind="Simple"/>
+        <Communication destinationClassName="gui.RightSide"/>
+        <Communication destinationClassName="mechanisms.FileReader"/>
+        <Communication destinationClassName="mechanisms.Evaluation"/>
+    </Class>
+    <Class name="mechanisms.Spam" x="522" y="153">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+</ClassDiagram>
